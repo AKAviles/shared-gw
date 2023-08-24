@@ -1,12 +1,23 @@
-org: akaviles024
-app: shared-gw
-service: shared-gw
-frameworkVersion: '3'
-
+service: shared-gateway
 provider:
   name: aws
   runtime: nodejs18.x
-
-functions:
-  function1:
-    handler: index.handler
+resources:
+  Resources:
+    SharedGW:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: SharedGW
+  Outputs:
+    apiGatewayRestApiId:
+      Value:
+        Ref: SharedGW
+      Export:
+        Name: SharedGW-restApiId
+    apiGatewayRestApiRootResourceId:
+      Value:
+        Fn::GetAtt:
+          - SharedGW
+          - RootResourceId
+      Export:
+        Name: SharedGW-rootResourceId
